@@ -1,0 +1,143 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>实时【新型冠状病毒肺炎】全球各国疫情信息（点）</title>
+    <style type="text/css">
+        html,body
+        {
+            margin:0;
+            height:100%;
+            width:100%;
+            padding:0;
+             }
+        #header{
+      
+        height:5%;
+        text-align:center;
+        font-size:larger;
+        color:Black;
+        font-weight:bolder;
+        
+    }
+        #gally{
+       
+        height:100%;
+        width:23%;
+        float:left;
+    }
+        #viewDiv{
+          
+        height:100%;
+        width:77%;
+        float:left;
+    }
+    
+
+    </style>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.19/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.19/"></script>
+
+    <script>
+      require(["esri/Map", "esri/views/MapView","esri/widgets/Compass","esri/layers/FeatureLayer","esri/widgets/BasemapToggle","esri/widgets/BasemapGallery","esri/widgets/Search","esri/widgets/ScaleBar","esri/widgets/LayerList","esri/widgets/Legend","esri/widgets/CoordinateConversion"], (Map, MapView,Compass,FeatureLayer,BasemapToggle,BasemapGallery,Search,ScaleBar,LayerList,Legend,CoordinateConversion) => {
+        const map = new Map({
+          basemap: "topo"
+        });
+        const layer = new FeatureLayer({
+        // URL to the service
+        url: "https://www.arcgisonline.cn/server/rest/services/Hosted/%E5%85%A8%E7%90%83%E5%90%84%E5%9B%BD%E5%AE%B6%E7%96%AB%E6%83%85%E4%BF%A1%E6%81%AF/FeatureServer"
+        });
+        map.add(layer);
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          zoom: 4,
+          center: [15, 65] // longitude, latitude
+        });
+        var ccWidget = new CoordinateConversion({
+          view: view
+        });
+
+        view.ui.add(ccWidget, "bottom-left");
+        
+         var compass = new Compass({
+         view: view
+         
+        });
+
+       // adds the compass to the top left corner of the MapView
+       view.ui.add(compass, "top-left");
+       
+       var searchWidget = new Search({
+          view: view
+        });
+
+        // Add the search widget to the top right corner of the view
+        view.ui.add(searchWidget, {
+          position: "top-right"
+        });
+        const toggle = new BasemapToggle({
+          // 2 - Set properties
+          view: view, // view that provides access to the map's 'topo-vector' basemap
+          nextBasemap: "hybrid" // allows for toggling to the 'hybrid' basemap
+        });
+
+        // Add widget to the top right corner of the view
+        view.ui.add(toggle, "top-right");
+        
+        var scaleBar = new ScaleBar({
+        view: view,
+        style:"ruler",
+        unit:"dual"
+         });
+        // Add widget to the bottom left corner of the view
+         view.ui.add(scaleBar, {
+        position: "bottom-left"
+        });
+        
+        view.when(function() {
+          var layerList = new LayerList({
+            view: view
+          });
+
+          // Add widget to the top right corner of the view
+          view.ui.add(layerList, "top-right");
+        });
+        
+        var legend = new Legend({
+         view: view,
+         layerInfos: [{
+         layer: layer,
+         title: "Legend"
+       }]
+       });
+
+      view.ui.add(legend, "bottom-right");
+      
+       
+       
+       var basemapGallery = new BasemapGallery({
+          view: view,
+          container:gally
+        });
+
+        // Add the widget to the top-right corner of the view
+        view1.ui.add(basemapGallery, {
+          position: "top-right"
+        });
+         
+        
+         
+        
+      });
+    </script>
+  </head>
+
+  <body class="calcite">
+    <div id="header">实时【新型冠状病毒肺炎】全球各国疫情信息（点）</div>
+    <div id="viewDiv"></div>
+    <div id="gally"></div>
+  </body>
+</html>
